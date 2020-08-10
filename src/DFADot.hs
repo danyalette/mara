@@ -9,13 +9,12 @@ import Data.GraphViz.Printing
 import Data.GraphViz.Attributes.Complete
 import DFA 
 import Data.List 
-import Stringable
 
 -- Convert DFA to Data.Graph.Inductive graph format
-makeGraphFromDFA :: (Ord a, Stringable a, Stringable b) => GenericDFA a b -> Gr String String
+makeGraphFromDFA :: (Ord a, Show a, Show b) => GenericDFA a b -> Gr String String
 makeGraphFromDFA (DFA states _ _ trans _ _) = run_ Data.Graph.Inductive.empty $
-            do insMapNodesM (map mkString states)
-               insMapEdgesM (mergeEdges (map (\(x, y, z) -> ((mkString x), (mkString z), (mkString y))) trans))
+            do insMapNodesM (map show states)
+               insMapEdgesM (mergeEdges (map (\(x, y, z) -> ((show x), (show z), (show y))) trans))
 
 -- Merge edges that have the same source and destination, 
 -- to de-clutter the diagram. 
@@ -28,7 +27,7 @@ mergeEdges transitions = foldr (\t l -> combine (mergeWith l t)) [] transitions
             else ((x', y', z'):l, (x, y, z))
 
 -- Convert DFA to DotGraph Format 
-makeDotFromDFA :: (Show a, Eq a, Ord a, Stringable a, Stringable b) => GenericDFA a b -> Bool -> Maybe (a -> Int) -> DotGraph Node
+makeDotFromDFA :: (Show a, Eq a, Ord a, Show b) => GenericDFA a b -> Bool -> Maybe (a -> Int) -> DotGraph Node
 makeDotFromDFA dfa cluster clusterFn= graphToDot params graph
   where graph :: Gr String String
         graph = makeGraphFromDFA dfa
@@ -53,12 +52,12 @@ makeDotFromDFA dfa cluster clusterFn= graphToDot params graph
         label :: String -> Attribute
         label l = toLabel $ "  " ++ l ++ "  "
         nodeFmt :: (a, String) -> Attributes
-        nodeFmt (x, l) = if (any ( == l) (map mkString (finalStates dfa)))
+        nodeFmt (x, l) = if (any ( == l) (map show (finalStates dfa)))
             then (Peripheries 2):(nodeAttr l) -- Add double outline to final states
             else (nodeAttr l)
         edgeFmt (x, y, l) = [label l]
-        nodeAttr l = if (l == (mkString (initialState dfa))) then [label ("--> " ++ l ++ "(initial)")] else [label l]
-        getStateFromStateString string = filter (\state -> string == (mkString state)) (states dfa)
+        nodeAttr l = if (l == (show (initialState dfa))) then [label ("--> " ++ l ++ "(initial)")] else [label l]
+        getStateFromStateString string = filter (\state -> string == (show state)) (states dfa)
 
           
 
