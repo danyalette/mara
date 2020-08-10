@@ -1,0 +1,8 @@
+{
+    "states": ["q0", "q1"]
+  , "alphabet": ["i"]
+  , "initialState": "q0"
+  , "transitions": [["q0", "i", "q1"], ["q1", "i", "q0"]]
+  , "finalStates": ["q1"]
+  , "caption": "Simple Thread Template"
+}
