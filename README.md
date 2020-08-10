@@ -1,13 +1,13 @@
 # Mara 
 
-Create DOT graphs from DFAs, with the option of interleaving the DFA (to represent multi-threading) or applying trace-based symmetry reduction or reachability reduction
+Create DOT graphs from DFAs, with the option of interleaving the DFA (to represent multi-threading) or applying trace-based symmetry reduction or reachability reduction.
 
 ```
 cabal new-build
-cabal new-run --  mara -f thread-templates/simple.tt -c -n 4 | tail -n +2 | dot -Tpng > img/simple.png
+cabal new-run --  mara -f thread-templates/simple.tt -c -n 3 | tail -n +2 | dot -Tpng > img/simple.png
 ```
 
-The thread template file contains:
+The example thread template file `thread-templates/simple.tt` contains:
 ```
 {
     "states": ["q0", "q1"]
@@ -19,7 +19,7 @@ The thread template file contains:
 }
 ```
 
-which produces the image 
+The cabal run command above produces the following image: 
 ![4-Threaded Simple](img/simple.png)
 
 ## Options 
