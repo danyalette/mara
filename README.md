@@ -1,6 +1,6 @@
 # Mara 
 
-Create DOT visualization of a DFA. 
+Create DOT graphs from DFAs, with the option of interleaving the DFA (to represent multi-threading) or applying trace-based symmetry reduction or reachability reduction
 
 ```
 cabal new-build
